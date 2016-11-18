@@ -48,6 +48,13 @@ class CalculatorViewController: UIViewController {
     // Dispose of any resources that can be recreated.
   }
   
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.identifier == "showOperations" {
+      let operationsTableViewController = segue.destination as! OperationsTableViewController
+      operationsTableViewController.operations = operations
+    }
+  }
+  
   
   // MARK: Operator Actions
   
@@ -103,63 +110,23 @@ class CalculatorViewController: UIViewController {
   
   // MARK: Number actions
 
-  @IBAction func oneClicked(_ sender: AnyObject) {
-    updateLabel(forNumber: 1)
-  }
-
-  @IBAction func twoClicked(_ sender: AnyObject) {
-    updateLabel(forNumber: 2)
-  }
-  
-  @IBAction func threeClicked(_ sender: AnyObject) {
-    updateLabel(forNumber: 3)
-  }
-  
-  @IBAction func fourClicked(_ sender: AnyObject) {
-    updateLabel(forNumber: 4)
-  }
-  
-  @IBAction func fiveClicked(_ sender: AnyObject) {
-    updateLabel(forNumber: 5)
-  }
-  
-  @IBAction func sixClicked(_ sender: AnyObject) {
-    updateLabel(forNumber: 6)
-  }
-  
-  @IBAction func sevenClicked(_ sender: AnyObject) {
-    updateLabel(forNumber: 7)
-  }
-  
-  @IBAction func eightClicked(_ sender: AnyObject) {
-    updateLabel(forNumber: 8)
-  }
-  
-  @IBAction func nineClicked(_ sender: AnyObject) {
-    updateLabel(forNumber: 9)
-  }
-  
-  @IBAction func zeroClicked(_ sender: AnyObject) {
-    updateLabel(forNumber: 0)
+  @IBAction func numberClicked(_ sender: AnyObject) {
+    let currentText = operationsLabel.text
+    
+    if let text = currentText {
+      operationsLabel.text = text + sender.currentTitle!!
+    }
+    else {
+      if sender.currentTitle == "0" {
+        return
+      }
+      
+      operationsLabel.text = sender.currentTitle
+    }
   }
   
   
   // MARK: Helper functions
-  
-  func updateLabel(forNumber number: Int) {
-    let currentText = operationsLabel.text
-    
-    if let text = currentText {
-      operationsLabel.text = text + String(number)
-    }
-    else {
-      if number == 0 {
-        return
-      }
-      
-      operationsLabel.text = String(number)
-    }
-  }
   
   func updateNumbers(withOperation operation: OperationType) {
     currentOperation = operation
@@ -192,13 +159,6 @@ class CalculatorViewController: UIViewController {
     operations.append(operation)
     
     return result
-  }
-  
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if segue.identifier == "showOperations" {
-      let operationsTableViewController = segue.destination as! OperationsTableViewController
-      operationsTableViewController.operations = operations
-    }
   }
 }
 

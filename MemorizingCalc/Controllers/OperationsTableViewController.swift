@@ -12,6 +12,7 @@ class OperationsTableViewController: UITableViewController {
   
   
   // MARK: Properties
+  
   var operations = [Operation]() {
     didSet {
       tableView.reloadData()
